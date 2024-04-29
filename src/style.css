@@ -1,0 +1,43 @@
+body {
+  background: transparent; 
+  margin: 0;
+  height: 100vh;
+  justify-content: center;
+  align-items: center;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+}
+
+.App {
+  color: #72a24d;
+}
+
+.introduction {
+  background-image: url('../logo.jpg');
+  background-size: cover;
+  background-position: center;
+  height: 100vh;
+  width: auto;
+}
+.introduction1 {
+  background-color: #387961;
+  background-size: cover;
+  background-position: center;
+  height: 100vh;
+  width: auto;
+}
+
+.scroll-text {
+  float: bottom;
+  color: #ffffff; /* Text color */
+  font-size: 18px; /* Adjust font size as needed */
+}
+.chart-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+}
+.dropdown-container {
+  margin: 20px 0;
+}
