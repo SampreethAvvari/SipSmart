@@ -16,6 +16,7 @@ export const App = () => {
   );
 };
 
+
 function Navbar() {
   return (
     <nav className='navbar navbar-expand-lg navbar-dark bg-light fixed-top bg-transparent'>
@@ -138,76 +139,19 @@ function Sankey() {
   );
 }
 
-function Introduction1() {
-  return (
-    <section className='introduction1 d-flex align-items-center '>
-      <div className='container-fluid'>
-        <div className='row'>
-          <div className='offset-md-1 col-md-5'>
-            <div className='card shadow'>
-              <div className='card-body'>
-                <h1 className='card-title'>Options that are healthy comparitively</h1>
-                <p className='card-text'>
-                  the diagram contains sankey diagram on beverages that are less in calories
-                </p>
-                {/* Add more text or components as needed */}
-              </div>
-            </div>
-          </div>
-          <div className='offset-md-0 col-md-5'>
-            <div className='card shadow'>
-              <div className='card-body'>
-                <img src={sankeydiagram} alt="Girl in a jacket" width='100%'></img>
-                {/* Add more text or components as needed */}
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-  );
-}
-
-function Introduction2() {
-  return (
-    <section className='introduction1 d-flex align-items-center '>
-      <div className='container-fluid'>
-        <div className='row'>
-        <div className='offset-md-1 col-md-5'>
-            <div className='card shadow'>
-              <div className='card-body'>
-                <img src={sankeydiagram} alt="Sankey diagram" width='100%'></img>
-                {/* Add more text or components as needed */}
-              </div>
-            </div>
-          </div>
-          <div className='offset-md-0 col-md-5'>
-            <div className='card shadow'>
-              <div className='card-body'>
-                <h1 className='card-title'>Options that are unhealthy comparitively</h1>
-                <p className='card-text'>
-                the diagram contains sankey diagram on beverages that are more in calories
-                </p>
-                {/* Add more text or components as needed */}
-              </div>
-            </div>
-          </div>
-          </div>
-      </div>
-    </section>
-  );
-}
-
 function Comparison() {
   const [data, setData] = useState([]);
-  const [fullMap, SetFullMap] = useState(new Map());
+  const [beverageMap, SetFullMap] = useState(new Map());
 
-  const [uniqueBeverageCat, setGroupedData] = useState([]);
-  const [uniqueBeverage, setUniqueBeverages] = useState([]);
-  const [uniqueBeverageSize, setUniqueCategories] = useState([]);
+  const [uniqueBeverageCat, setBeverageCat] = useState(new Set([]));
+  const [uniqueBeverage, setUniqueBeverages] = useState(new Set([]));
+  const [uniqueBeverageSize, setUniqueBeverageSize] = useState(new Set([]));
+  const [uniqueMilkType, setUniqueMilkType] = useState(new Set([]));
 
-  const [selectedCategory, setSelectedCategory] = useState('');
+  const [selectedBeverageCat, setSelectedBeverageCat] = useState('');
   const [selectedBeverage, setSelectedBeverage] = useState('');
+  const [selectedBeverageSize, setSelectedBeverageSize] = useState('');
+  const [selectedMilkType, setSelectedMilkType] = useState('');
 
   useEffect(() => {
     const fetchData = async () => {
@@ -216,18 +160,6 @@ function Comparison() {
         const parsedData = d3.csvParse(text, d3.autoType);
         setData(parsedData);
 
-        const categoryMap = new Map();
-        parsedData.forEach(entry => {
-          const category = entry.Beverage_category;
-          const beverage = entry.Beverage;
-          if (!categoryMap.has(category)) {
-            categoryMap.set(category, new Set([beverage]));
-          } else {
-            categoryMap.get(category).add(beverage);
-          }
-        });
-
-        const beverageMap = new Map();
         parsedData.forEach(entry => {
           const category = entry.Beverage_category;
           const beverage = entry.Beverage;
@@ -264,9 +196,16 @@ function Comparison() {
           }
         
           beverageMap.get(category).get(beverage).get(size).set(milkType, nutritionalInfo);
-        });
 
-        console.log("full map", beverageMap)
+          uniqueBeverageCat.add(category);
+          uniqueBeverage.add(beverage);
+          uniqueBeverageSize.add(size);
+          uniqueMilkType.add(milkType);
+        });
+        setSelectedBeverageCat(Array.from(uniqueBeverageCat)[0]);
+        setSelectedBeverage(Array.from(uniqueBeverage)[0]);
+        setSelectedBeverageSize(Array.from(uniqueBeverageSize)[0]);
+        setSelectedMilkType(Array.from(uniqueMilkType)[0]);
     };
 
     fetchData();
@@ -274,13 +213,35 @@ function Comparison() {
 
   // Function to handle category selection
   const handleCategoryChange = (event) => {
-    setSelectedCategory(event.target.value);
-    setSelectedBeverage('');
+    setSelectedBeverageCat(event.target.value);
+    let tempCat = event.target.value;
+    let tempbev = beverageMap.get(tempCat).keys().next().value;
+    let tempsize = beverageMap.get(tempCat).get(tempbev).keys().next().value;
+    let tempmilk = beverageMap.get(tempCat).get(tempbev).get(tempsize).keys().next().value;
+    setSelectedBeverage(tempbev);
+    setSelectedBeverageSize(tempsize);
+    setSelectedMilkType(tempmilk);
   };
 
   // Function to handle beverage selection
   const handleBeverageChange = (event) => {
     setSelectedBeverage(event.target.value);
+    let tempbev = event.target.value;
+    let tempsize = beverageMap.get(selectedBeverageCat).get(tempbev).keys().next().value;
+    let tempmilk = beverageMap.get(selectedBeverageCat).get(tempbev).get(tempsize).keys().next().value;
+    setSelectedBeverageSize(tempsize);
+    setSelectedMilkType(tempmilk);
+  };
+
+  const handleBeverageSizeChange = (event) => {
+    setSelectedBeverageSize(event.target.value);
+    let tempsize = beverageMap.get(selectedBeverageCat).get(selectedBeverage).keys().next().value;
+    let tempmilk = beverageMap.get(selectedBeverageCat).get(selectedBeverage).get(tempsize).keys().next().value;
+    setSelectedMilkType(tempmilk);
+  };
+
+  const handleMilkTypeChange = (event) => {
+    setSelectedMilkType(event.target.value);
   };
 
 
@@ -292,19 +253,50 @@ function Comparison() {
             <div className='card shadow'>
               <div className='card-body'>
                 <h1 className='card-title'>Introduction</h1>
-                <div className="form-group">
-                  <label htmlFor="categoryDropdown">Select Beverage Category:</label>
-                  <select id="categoryDropdown" className="form-control" value={selectedCategory} onChange={handleCategoryChange}>
-                    <option value="">Select</option>
-                    {/* Populate options dynamically */}
-                  </select>
-                </div>
-                <div className="form-group">
-                  <label htmlFor="beverageDropdown">Select Beverage:</label>
-                  <select id="beverageDropdown" className="form-control" value={selectedBeverage} onChange={handleBeverageChange}>
-                    <option value="">Select</option>
-                    {/* Populate options dynamically based on selected category */}
-                  </select>
+                <div className='row'>
+                  <div className='col-md-3'>
+                    <div className="form-group">
+                      <label htmlFor="categoryDropdown">Select Beverage Category:</label>
+                      <select id="categoryDropdown" className="form-control" value={selectedBeverageCat} onChange={handleCategoryChange}>
+                        {Array.from(uniqueBeverageCat).map(category => (
+                            <option key={category} value={category}>{category}</option>
+                        ))}
+                      </select>
+                    </div>
+                  </div>
+                  <div className='col-md-3'>
+                    <div className="form-group">
+                      <label htmlFor="beverageDropdown">Select Beverage:</label>
+                      <select id="beverageDropdown" className="form-control" value={selectedBeverage} onChange={handleBeverageChange}>
+                        {/* <option value="All">Select</option> */}
+                        {selectedBeverageCat !== '' && Array.from(beverageMap.get(selectedBeverageCat).keys()).map(category => (
+                            <option key={category} value={category}>{category}</option>
+                        ))}
+                      </select>
+                    </div>
+                  </div>
+                  <div className='col-md-3'>
+                    <div className="form-group">
+                      <label htmlFor="beverageSizeDropdown">Select Beverage Size:</label>
+                      <select id="beverageSizeDropdown" className="form-control" value={selectedBeverageSize} onChange={handleBeverageSizeChange}>
+                        {/* <option value="All">Select</option> */}
+                        {selectedBeverageCat !== '' && selectedBeverage !== '' && Array.from(beverageMap.get(selectedBeverageCat).get(selectedBeverage).keys()).map(category => (
+                            <option key={category} value={category}>{category}</option>
+                        ))}
+                      </select>
+                    </div>
+                  </div>
+                  <div className='col-md-3'>
+                    <div className="form-group">
+                      <label htmlFor="milkTypeDropdown">Select Milk Type:</label>
+                      <select id="milkTypeDropdown" className="form-control" value={selectedMilkType} onChange={handleMilkTypeChange}>
+                      {/* <option value="All">Select</option> */}
+                      {selectedBeverageCat !== '' && selectedBeverage !== '' && selectedBeverageSize !== '' && Array.from(beverageMap.get(selectedBeverageCat).get(selectedBeverage).get(selectedBeverageSize).keys()).map(category => (
+                            <option key={category} value={category}>{category}</option>
+                        ))}
+                      </select>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
@@ -328,7 +320,7 @@ function StarbucksChart() {
           const response = await fetch('../starbucks_drinkMenu_expanded.csv');
           const text = await response.text();
           const parsedData = d3.csvParse(text, d3.autoType);
-          console.log("data loaded", parsedData);
+          // console.log("data loaded", parsedData);
           setData(parsedData);
           const grouped = d3.group(parsedData, d => d.Beverage_category);
           setGroupedData(grouped);
