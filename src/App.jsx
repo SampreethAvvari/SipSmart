@@ -798,6 +798,7 @@ function CustomizeDrinkMake() {
     context.stroke();
 
   };
+  
 
   return (
     <canvas ref={canvasRef}/>
