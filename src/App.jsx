@@ -8,8 +8,7 @@ export const App = () => {
     <div className='App'>
       <Navbar />
       <Introduction />
-      <Introduction1 />
-      <Introduction2 />
+      <Sankey />
       <Comparison />
       <StarbucksChart />
       <LayoutComponent />
@@ -22,7 +21,7 @@ function Navbar() {
     <nav className='navbar navbar-expand-lg navbar-dark bg-light fixed-top bg-transparent'>
       <div className='container-fluid'>
         <a className='navbar-brand' href='#'>
-          SIPSMART
+          <b>SIPSMART</b>
         </a>
         <button
           className='navbar-toggler'
@@ -69,27 +68,76 @@ function Introduction() {
     <section className='introduction d-flex align-items-center '>
       <div className='container-fluid'>
         <div className='row'>
-          <div className='offset-md-3 col-md-6'>
-            <div className='card shadow'>
-              <div className='card-body'>
-                <h1 className='card-title'>Introduction</h1>
-                <p className='card-text'>
-                  Discover our delicious range of beverages and food items.
-                </p>
-                {/* Add more text or components as needed */}
-              </div>
-            </div>
+          <div className='col-md-6 title'>
+            <p className='title-welcome'>WELCOME TO</p>
+            <p className='title-sip'>SIP-SMART!</p>
+            <p className='title-desc'>Explore the nutritional impact of Starbucks beverages, 
+              from calories to caffeine, and understand their effects on your health. 
+              This website visualizes vital insights, Scroll down and unlock the knowledge to enjoy your drinks with confidence!</p>
           </div>
         </div>
         <div className='row position-absolute w-100 bottom-0'>
-          <div className='col text-center'>
-            <p className='scroll-text'>Scroll for more</p>
+          <div className='col text-center text-bounce'>
+            <p className='scroll-text'>scroll for more</p>
+            <p className='scroll-text-v'>v</p>
+            <p className='scroll-text-v'>v</p>
           </div>
         </div>
       </div>
     </section>
   );
 }
+
+function Sankey() {
+  return (
+    <section className='introduction1 d-flex align-items-center '>
+      <div className='container-fluid'>
+        <div className='row'>
+        <div className='offset-md-2 col-md-4'>
+            <div className='card shadow'>
+              <div className='card-body'>
+                <img src={sankeydiagram} alt="Sankey Diagram"></img>
+              </div>
+            </div>
+          </div>
+          <div className='offset-md-0 col-md-4 content'>
+            {/* <div className='card shadow leftcard'>
+              <div className='card-body'>
+            <h1 className='card-title'></h1>
+              </div>
+            </div> */}
+            <p className='card-text leftcard'> We Have Some Options that are<br></br> healthy comparitively
+              the right side sankey diagram shows beverages that are less in calories
+            </p>
+            <img className='content-img-left' src="../public/arrow.png" alt="Sankey diagram"></img>
+          </div>
+        </div>
+        <div className='row'>
+        <div className='offset-md-2 col-md-4 content'>
+            {/* <div className='card shadow rightcard'>
+              <div className='card-body'>
+            <h1 className='card-title'></h1>
+              </div>
+            </div> */}
+            <p className='card-text rightcard'> We have Some
+            Options that are unhealthy comparitively
+            the left side sankey diagram shows beverages that are more in calories
+            </p>
+            <img className='content-img-right' src="../public/arrow.png" alt="Sankey diagram"></img>
+        </div>
+        <div className='offset-md-0 col-md-4'>
+            <div className='card shadow'>
+              <div className='card-body'>
+                <img src={sankeydiagram} alt="Sankey diagram"></img>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
 function Introduction1() {
   return (
     <section className='introduction1 d-flex align-items-center '>
@@ -115,15 +163,11 @@ function Introduction1() {
             </div>
           </div>
         </div>
-        <div className='row position-absolute w-100 bottom-0'>
-          <div className='col text-center'>
-            <p className='scroll-text'>Scroll for more</p>
-          </div>
-        </div>
       </div>
     </section>
   );
 }
+
 function Introduction2() {
   return (
     <section className='introduction1 d-flex align-items-center '>
@@ -149,44 +193,128 @@ function Introduction2() {
             </div>
           </div>
           </div>
-        <div className='row position-absolute w-100 bottom-0'>
-          <div className='col text-center'>
-            <p className='scroll-text'>Scroll for more</p>
-          </div>
-        </div>
       </div>
     </section>
   );
 }
+
 function Comparison() {
+  const [data, setData] = useState([]);
+  const [fullMap, SetFullMap] = useState(new Map());
+
+  const [uniqueBeverageCat, setGroupedData] = useState([]);
+  const [uniqueBeverage, setUniqueBeverages] = useState([]);
+  const [uniqueBeverageSize, setUniqueCategories] = useState([]);
+
+  const [selectedCategory, setSelectedCategory] = useState('');
+  const [selectedBeverage, setSelectedBeverage] = useState('');
+
+  useEffect(() => {
+    const fetchData = async () => {
+        const response = await fetch('../starbucks_drinkMenu_expanded-revised.csv');
+        const text = await response.text();
+        const parsedData = d3.csvParse(text, d3.autoType);
+        setData(parsedData);
+
+        const categoryMap = new Map();
+        parsedData.forEach(entry => {
+          const category = entry.Beverage_category;
+          const beverage = entry.Beverage;
+          if (!categoryMap.has(category)) {
+            categoryMap.set(category, new Set([beverage]));
+          } else {
+            categoryMap.get(category).add(beverage);
+          }
+        });
+
+        const beverageMap = new Map();
+        parsedData.forEach(entry => {
+          const category = entry.Beverage_category;
+          const beverage = entry.Beverage;
+          const size = entry.Beverage_size;
+          const milkType = entry.Milk_type;
+          const nutritionalInfo = {
+            Calories: +entry.Calories,
+            'Total Fat (g)': +entry['Total Fat (g)'],
+            'Trans Fat (g)': +entry['Trans Fat (g)'],
+            'Saturated Fat (g)': +entry['Saturated Fat (g)'],
+            'Sodium (mg)': +entry['Sodium (mg)'],
+            'Total Carbohydrates (g)': +entry['Total Carbohydrates (g)'],
+            'Cholesterol (mg)': +entry['Cholesterol (mg)'],
+            'Dietary Fibre (g)': +entry['Dietary Fibre (g)'],
+            'Sugars (g)': +entry['Sugars (g)'],
+            'Protein (g)': +entry['Protein (g)'],
+            'Vitamin A (% DV)': entry['Vitamin A (% DV)'],
+            'Vitamin C (% DV)': entry['Vitamin C (% DV)'],
+            'Calcium (% DV)': entry['Calcium (% DV)'],
+            'Iron (% DV)': entry['Iron (% DV)'],
+            'Caffeine (mg)': +entry['Caffeine (mg)'],
+          };
+          
+          if (!beverageMap.has(category)) {
+            beverageMap.set(category, new Map());
+          }
+          
+          if (!beverageMap.get(category).has(beverage)) {
+            beverageMap.get(category).set(beverage, new Map());
+          }
+          
+          if (!beverageMap.get(category).get(beverage).has(size)) {
+            beverageMap.get(category).get(beverage).set(size, new Map());
+          }
+        
+          beverageMap.get(category).get(beverage).get(size).set(milkType, nutritionalInfo);
+        });
+
+        console.log("full map", beverageMap)
+    };
+
+    fetchData();
+    }, []);
+
+  // Function to handle category selection
+  const handleCategoryChange = (event) => {
+    setSelectedCategory(event.target.value);
+    setSelectedBeverage('');
+  };
+
+  // Function to handle beverage selection
+  const handleBeverageChange = (event) => {
+    setSelectedBeverage(event.target.value);
+  };
 
 
-  
   return (
     <section className='introduction d-flex align-items-center '>
       <div className='container-fluid'>
         <div className='row'>
-          <div className='offset-md-3 col-md-6'>
+          <div className='offset-md-2 col-md-8'>
             <div className='card shadow'>
               <div className='card-body'>
                 <h1 className='card-title'>Introduction</h1>
-                <p className='card-text'>
-                  Discover our delicious range of beverages and food items.
-                </p>
-                {/* Add more text or components as needed */}
+                <div className="form-group">
+                  <label htmlFor="categoryDropdown">Select Beverage Category:</label>
+                  <select id="categoryDropdown" className="form-control" value={selectedCategory} onChange={handleCategoryChange}>
+                    <option value="">Select</option>
+                    {/* Populate options dynamically */}
+                  </select>
+                </div>
+                <div className="form-group">
+                  <label htmlFor="beverageDropdown">Select Beverage:</label>
+                  <select id="beverageDropdown" className="form-control" value={selectedBeverage} onChange={handleBeverageChange}>
+                    <option value="">Select</option>
+                    {/* Populate options dynamically based on selected category */}
+                  </select>
+                </div>
               </div>
             </div>
-          </div>
-        </div>
-        <div className='row position-absolute w-100 bottom-0'>
-          <div className='col text-center'>
-            <p className='scroll-text'>Scroll for more</p>
           </div>
         </div>
       </div>
     </section>
   );
 }
+
 function StarbucksChart() {
   const [data, setData] = useState([]);
   const [groupedData, setGroupedData] = useState(new Map());
@@ -279,6 +407,7 @@ function StarbucksChart() {
         </div>
     );
 }
+
 function CustomizeDrink() {
   const [size, setSize] = useState(1);
   const [activeLayer, setActiveLayer] = useState(null);
@@ -355,8 +484,6 @@ function CustomizeDrink() {
     context.stroke();
   };
 
-
-
 const calculateLayers = () => {
     const width = 400;
     const height = size * 200;
@@ -408,6 +535,7 @@ const calculateLayers = () => {
       </div>
     );
   }
+  
 function LayoutComponent() {
   return (
       <section className='introduction1 d-flex align-items-center '>
