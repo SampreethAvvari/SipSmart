@@ -9,9 +9,9 @@ export const App = () => {
       <Navbar />
       <Introduction />
       <Sankey />
-      <Comparison />
       <StarbucksChart />
-      <LayoutComponent />
+      <Comparison />
+      <Documentation />
     </div>
   );
 };
@@ -37,16 +37,6 @@ function Navbar() {
         </button>
         <div className='collapse navbar-collapse' id='navbarNav'>
           <ul className='navbar-nav ml-auto'>
-            <li className='nav-item'>
-              <a className='nav-link' href='#'>
-                Ha Yeon
-              </a>
-            </li>
-            <li className='nav-item'>
-              <a className='nav-link' href='#'>
-                Claire
-              </a>
-            </li>
             <li className='nav-item'>
               <a className='nav-link' href='#'>
                 Anusha
@@ -113,13 +103,13 @@ function Sankey() {
             <img className='content-img-left' src="../public/arrow.png" alt="Sankey diagram"></img>
           </div>
         </div>
-        <div className='row'>
+        {/* <div className='row'>
         <div className='offset-md-2 col-md-4 content'>
-            {/* <div className='card shadow rightcard'>
+            <div className='card shadow rightcard'>
               <div className='card-body'>
             <h1 className='card-title'></h1>
               </div>
-            </div> */}
+            </div>
             <p className='card-text rightcard'> We have Some
             Options that are unhealthy comparitively
             the left side sankey diagram shows beverages that are more in calories
@@ -133,7 +123,7 @@ function Sankey() {
               </div>
             </div>
           </div>
-        </div>
+        </div> */}
       </div>
     </section>
   );
@@ -246,28 +236,30 @@ function Comparison() {
 
 
   return (
-    <section className='introduction d-flex align-items-center '>
+    <section className='introduction d-flex align-items-center comparison'>
       <div className='container-fluid'>
         <div className='row'>
-          <div className='offset-md-2 col-md-8'>
+          <div className='offset-md-1 col-md-10'>
             <div className='card shadow'>
+              <div className='card-title'>
+              <h1 className='comparision'>Comparision</h1>
+              </div>
               <div className='card-body'>
-                <h1 className='card-title'>Introduction</h1>
                 <div className='row'>
                   <div className='col-md-3'>
                     <div className="form-group">
                       <label htmlFor="categoryDropdown">Select Beverage Category:</label>
-                      <select id="categoryDropdown" className="form-control" value={selectedBeverageCat} onChange={handleCategoryChange}>
+                      <select id="categoryDropdown" className="form-control selct-class" value={selectedBeverageCat} onChange={handleCategoryChange}>
                         {Array.from(uniqueBeverageCat).map(category => (
                             <option key={category} value={category}>{category}</option>
                         ))}
                       </select>
                     </div>
                   </div>
-                  <div className='col-md-3'>
+                  <div className='col-md-2'>
                     <div className="form-group">
                       <label htmlFor="beverageDropdown">Select Beverage:</label>
-                      <select id="beverageDropdown" className="form-control" value={selectedBeverage} onChange={handleBeverageChange}>
+                      <select id="beverageDropdown" className="form-control selct-class" value={selectedBeverage} onChange={handleBeverageChange}>
                         {/* <option value="All">Select</option> */}
                         {selectedBeverageCat !== '' && Array.from(beverageMap.get(selectedBeverageCat).keys()).map(category => (
                             <option key={category} value={category}>{category}</option>
@@ -275,10 +267,10 @@ function Comparison() {
                       </select>
                     </div>
                   </div>
-                  <div className='col-md-3'>
+                  <div className='col-md-2'>
                     <div className="form-group">
                       <label htmlFor="beverageSizeDropdown">Select Beverage Size:</label>
-                      <select id="beverageSizeDropdown" className="form-control" value={selectedBeverageSize} onChange={handleBeverageSizeChange}>
+                      <select id="beverageSizeDropdown" className="form-control selct-class" value={selectedBeverageSize} onChange={handleBeverageSizeChange}>
                         {/* <option value="All">Select</option> */}
                         {selectedBeverageCat !== '' && selectedBeverage !== '' && Array.from(beverageMap.get(selectedBeverageCat).get(selectedBeverage).keys()).map(category => (
                             <option key={category} value={category}>{category}</option>
@@ -286,15 +278,90 @@ function Comparison() {
                       </select>
                     </div>
                   </div>
-                  <div className='col-md-3'>
+                  <div className='col-md-2'>
                     <div className="form-group">
                       <label htmlFor="milkTypeDropdown">Select Milk Type:</label>
-                      <select id="milkTypeDropdown" className="form-control" value={selectedMilkType} onChange={handleMilkTypeChange}>
+                      <select id="milkTypeDropdown" className="form-control selct-class" value={selectedMilkType} onChange={handleMilkTypeChange}>
                       {/* <option value="All">Select</option> */}
                       {selectedBeverageCat !== '' && selectedBeverage !== '' && selectedBeverageSize !== '' && Array.from(beverageMap.get(selectedBeverageCat).get(selectedBeverage).get(selectedBeverageSize).keys()).map(category => (
                             <option key={category} value={category}>{category}</option>
                         ))}
                       </select>
+                    </div>
+                  </div>
+                  <div className='col-md-3'>
+                    <div className="form-group">
+                    <img className='content-img' src="../public/legends.png" alt="cup diagram"></img>
+                    </div>
+                  </div>
+                </div>
+                <br></br>
+                <div className='row'>
+                <div className='col-md-3'>
+                  <h5 className='keep-text'>A StarBucks Cup</h5>
+                </div>
+                <div className='col-md-3'>
+                  <h5 className='keep-text'>Nutritional profile</h5>
+                </div>
+                <div className='col-md-3'>
+                  <h5 className='keep-text'>UnHealthy Equivalent options</h5>
+                </div>
+                <div className='col-md-3'>
+                  <h5 className='keep-text'>Healthy Equivalent options</h5>
+                </div>
+                </div>
+                <div className='row'>
+                  <div className='col-md-3'>
+                    <img className='content-img' src="../public/starbuckscup.png" alt="cup diagram"></img>
+                  </div>
+                  <div className='col-md-3 drink'>
+                    <CustomizeDrinkMake />
+                  </div>
+                  <div className='col-md-3 tofusss'>
+                    <div className='row'>
+                      {selectedBeverageCat !== '' && [...Array(Math.ceil(beverageMap.get(selectedBeverageCat).get(selectedBeverage).get(selectedBeverageSize).get(selectedMilkType)['Calories']/20))].map((_, index) => (
+                        <div className='col-md-2'>
+                          <img className='meldoy-img' src="../public/melody.png" alt="cup diagram"></img>
+                        </div>
+                      ))}
+                    </div>
+                    <div className='row'>
+                    {selectedBeverageCat !== '' && [...Array(Math.ceil(beverageMap.get(selectedBeverageCat).get(selectedBeverage).get(selectedBeverageSize).get(selectedMilkType)['Sugars (g)']/5))].map((_, index) => (
+                        <div className='col-md-2'>
+                          <img className='spoon-img' src="../public/sugarspoon.png" alt="cup diagram"></img>
+                        </div>
+                      ))}
+                    </div>
+                    <div className='row'>
+                    {selectedBeverageCat !== '' && [...Array(Math.ceil(beverageMap.get(selectedBeverageCat).get(selectedBeverage).get(selectedBeverageSize).get(selectedMilkType)['Total Fat (g)']/1))].map((_, index) => (
+                        <div className='col-md-2'>
+                          <img className='oil-img' src="../public/oilpng2.png" alt="cup diagram"></img>
+                        </div>
+                      ))}
+                    </div>
+                    <div className='row'>
+                    {selectedBeverageCat !== '' && [...Array(Math.ceil(beverageMap.get(selectedBeverageCat).get(selectedBeverage).get(selectedBeverageSize).get(selectedMilkType)['Protein (g)']/3))].map((_, index) => (
+                        <div className='col-md-2'>
+                          <img className='tofu-img' src="../public/tofuc.png" alt="cup diagram"></img>
+                        </div>
+                      ))}
+                    </div>
+                    <div className='row'>
+                    {selectedBeverageCat !== '' && [...Array(Math.ceil(beverageMap.get(selectedBeverageCat).get(selectedBeverage).get(selectedBeverageSize).get(selectedMilkType)['Dietary Fibre (g)']/1))].map((_, index) => (
+                        <div className='col-md-2'>
+                          <img className='wheat-img' src="../public/wheat1.png" alt="cup diagram"></img>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+
+                  <div className='col-md-3 tofusss1'>
+                    <div className='row'>
+                      {selectedBeverageCat !== '' && [...Array(Math.ceil(beverageMap.get(selectedBeverageCat).get(selectedBeverage).get(selectedBeverageSize).get(selectedMilkType)['Calories']/4))].map((_, index) => (
+                        <div className='col-md-2'>
+                          <img className='staw-img' src="../public/staw2.png" alt="cup diagram"></img>
+                        </div>
+                      ))}
                     </div>
                   </div>
                 </div>
@@ -346,12 +413,13 @@ function StarbucksChart() {
       const svg = d3.select(svgRef.current);
       svg.selectAll('*').remove(); // Clear SVG before redrawing
 
-      const margin = { top: 20, right: 30, bottom: 110, left: 200 };
+      const margin = { top: 20, right: 30, bottom: 100, left: 200 };
       const height = 500 - margin.top - margin.bottom;
       const barWidth = 20;  // Set a fixed bar width
       const totalWidth = Math.max(800, filteredData.length * (barWidth + 10)) + margin.left + margin.right;
+      // const totalWidth = 1000;
 
-      svg.attr('viewBox', `0 0 ${totalWidth} ${height + margin.top + margin.bottom}`);
+      svg.attr('viewBox', `0 0 ${totalWidth} ${520}`);
 
       const x = d3.scaleLinear()
           .domain([0, filteredData.length])
@@ -362,7 +430,7 @@ function StarbucksChart() {
           .range([height - margin.bottom, margin.top]);
 
       svg.append("g")
-          .attr("fill", 'brown')
+          .attr("fill", '#3d8569')
           .selectAll("rect")
           .data(filteredData)
           .join("rect")
@@ -386,17 +454,27 @@ function StarbucksChart() {
   };
 
   return (
-      <div className='chart-container introduction1'>
-        <div className='dropdown-container'>
-          <h1>Starbucks Beverage Data</h1>
-          <select value={selectedCategory} onChange={e => setSelectedCategory(e.target.value)}>
-              {uniqueCategories.map(category => (
-                  <option key={category} value={category}>{category}</option>
-              ))}
-          </select>
+    <section className='introduction1 d-flex align-items-center '>
+      <div className='container-fluid'>
+        <div className='row'>
+          <div className='offset-md-2 col-md-8'>
+            <div className='card shadow'>
+              <div className='card-title beverage-graph'>
+                <h1>Starbucks Beverage Data</h1>
+                <select className='selct-class' value={selectedCategory} onChange={e => setSelectedCategory(e.target.value)}>
+                  {uniqueCategories.map(category => (
+                    <option key={category} value={category}>{category}</option>
+                  ))}
+                </select>
+              </div>
+              <div className='card-body'>
+                <svg ref={svgRef}></svg>
+              </div>
+            </div>
           </div>
-          <svg ref={svgRef}></svg>
         </div>
+      </div>
+    </section>
     );
 }
 
@@ -528,6 +606,121 @@ const calculateLayers = () => {
     );
   }
   
+function CustomizeDrink2() {
+  const [size, setSize] = useState(() => parseFloat(localStorage.getItem('drinkSize')) || 1);
+  const [selectedOptions, setSelectedOptions] = useState(() => {
+    const savedOptions = localStorage.getItem('selectedOptions');
+    return savedOptions ? JSON.parse(savedOptions) : Array(4).fill(0);
+  });
+  const [layerOptions] = useState([
+      ["None", "2% reduced fat", "1% reduced fat", "Soy milk", "Almond milk", "Oat milk"],
+      ["None", "Zero Calorie sugar", "Sugar(Normal)", "Honey", "Maple Syrup"],
+      ["None", "Coffee Type 1", "Coffee Type 2", "Coffee Type 3"],
+      ["None", "Cream", "No Cream"]
+  ]);
+  const colors = [
+    ["#f0f0f0", "#f8d7da", "#f4c2c2", "#ff6961", "#cb99c9", "#77dd77"],
+    ["#f0f0f0", "#fdfd96", "#f49ac2", "#836953", "#779ecb"],
+    ["#f0f0f0", "#966fd6", "#ffad60", "#c23b22"],
+    ["#f0f0f0", "#d3d3d3", "#fff44f"]
+  ];
+  const canvasRef = useRef(null);
+
+  useEffect(() => {
+    localStorage.setItem('drinkSize', size.toString());
+    localStorage.setItem('selectedOptions', JSON.stringify(selectedOptions));
+    drawCanvas();
+  }, [size, selectedOptions]);
+
+  const handleSelectionChange = (layerIndex, event) => {
+    const newOptions = [...selectedOptions];
+    newOptions[layerIndex] = parseInt(event.target.value, 10);
+    setSelectedOptions(newOptions);
+  };
+
+  const drawCanvas = () => {
+    const canvas = canvasRef.current;
+    const context = canvas.getContext('2d');
+    const width = 400;
+    const height = 500;  // Set a fixed canvas height
+    canvas.width = width;
+    canvas.height = height;
+
+    context.clearRect(0, 0, width, height);
+
+    // Adjust the cup dimensions based on size
+    const scale = 0.75 + 0.25 * size; // Scale ranges from 1.0 to 1.5
+    const cupWidthTop = 180 * scale; // Base width at the top of the cup
+    const cupWidthBottom = 120 * scale; // Base width at the bottom of the cup
+    const cupHeight = 280 * scale; // Height of the cup
+    const cupX = width / 2;
+    const cupY = height - cupHeight - 50; // Ensure there's space at the bottom
+
+    // Draw the cup outline
+    
+    const taperFactor = 2;
+
+    // Filling the layers inside the cup
+    // const layerHeight = cupHeight / layerOptions.length;
+    // for (let i = 0; i < selectedOptions.length; i++) {
+    //   if (selectedOptions[i] > 0) {
+    //     const topY = cupY + i * layerHeight;
+    //     const layerWidthTop = cupWidthTop - (cupWidthTop - cupWidthBottom) * (i / layerOptions.length)- taperFactor * i * scale;
+    //     context.fillStyle = ["#a6cee3", "#1f78b4", "#b2df8a", "#33a02c"][i];
+    //     context.fillRect(cupX - layerWidthTop / 2, topY, layerWidthTop, layerHeight);
+    //   }
+    // }
+
+    const layerHeight = cupHeight / layerOptions.length;
+    selectedOptions.forEach((option, index) => {
+      const topY = cupY + index * layerHeight;
+      context.fillStyle = colors[index][option]; // Assign color per layer
+      context.fillRect(cupX - cupWidthTop / 2, topY, cupWidthTop, layerHeight);
+    });
+    context.beginPath();
+    context.lineWidth = 10;
+    context.moveTo(cupX - cupWidthTop / 2, cupY);
+    context.lineTo(cupX + cupWidthTop / 2, cupY);
+    context.lineTo(cupX + cupWidthBottom / 2, cupY + cupHeight);
+    context.lineTo(cupX - cupWidthBottom / 2, cupY + cupHeight);
+    context.closePath();
+    context.stroke();
+
+  };
+
+  return (
+    <div>
+      <h1>Customize Your Drink</h1>
+      {layerOptions.map((options, index) => (
+        <div key={index}>
+          <h3>Layer {index + 1}</h3>
+          <select value={selectedOptions[index]} onChange={(e) => handleSelectionChange(index, e)}>
+            {options.map((option, optionIndex) => (
+              <option key={optionIndex} value={optionIndex}>{option}</option>
+            ))}
+          </select>
+        </div>
+      ))}
+      <div>
+        <label>Size:</label>
+        {["1", "1.5", "2", "2.5"].map((option, index) => (
+          <label key={index}>
+            <input
+              type="radio"
+              name="size"
+              value={option}
+              checked={parseFloat(size) === parseFloat(option)}
+              onChange={(e) => setSize(parseFloat(e.target.value))}
+            />
+            {option === "1" ? "Short" : option === "1.5" ? "Tall" : option === "2" ? "Grande" : "Venti"}
+          </label>
+        ))}
+      </div>
+      <canvas ref={canvasRef} style={{ border: '1px solid black', marginTop: '20px' }} />
+    </div>
+  );
+}
+
 function LayoutComponent() {
   return (
       <section className='introduction1 d-flex align-items-center '>
@@ -536,7 +729,7 @@ function LayoutComponent() {
                   <div className='offset-md-1 col-md-5'>
                       <div className='card shadow'>
                           <div className='card-body'>
-                              <CustomizeDrink />
+                              <CustomizeDrink2 />
                           </div>
                       </div>
                   </div>
@@ -554,4 +747,147 @@ function LayoutComponent() {
           </div>
       </section>
   );
+}
+
+function CustomizeDrinkMake() {
+  // const [size, setSize] = useState(() => parseFloat(localStorage.getItem('drinkSize')) || 1);
+  // const [selectedOptions, setSelectedOptions] = useState(() => {
+  //   const savedOptions = localStorage.getItem('selectedOptions');
+  //   return savedOptions ? JSON.parse(savedOptions) : Array(5).fill(0);
+  // });
+  const selectedOptions = [1,2,3,4,5];
+  const size = 5;
+  const colors = [
+    "#663300", "#964B00", "#B25900", "#C7762C", "#DE924F"
+  ];
+  const canvasRef = useRef(null);
+  useEffect(() => {
+    drawCanvas();
+  },);
+
+  const drawCanvas = () => {
+    const canvas = canvasRef.current;
+    const context = canvas.getContext('2d');
+    const width = 300;
+    const height = 240;
+    canvas.width = width;
+    canvas.height = height;
+    context.clearRect(0, 0, width, height);
+    const scale = 0.75 + 0.25 * size; // Scale ranges from 1.0 to 1.5
+    const cupWidthTop = 90 * scale; // Base width at the top of the cup
+    const cupWidthBottom = 50 * scale; // Base width at the bottom of the cup
+    const cupHeight = 100 * scale; // Height of the cup
+    const cupX = width / 2;
+    const cupY = height - cupHeight - 50; // Ensure there's space at the bottom
+    const taperFactor = 2;
+    const layerHeight = cupHeight / 5;
+    selectedOptions.forEach((option, index) => {
+      const topY = cupY + index * layerHeight;
+      const layerWidthTop = cupWidthTop - (cupWidthTop - cupWidthBottom) * (index / 5)- taperFactor * index * scale;
+      context.fillStyle = colors[index]; // Assign color per layer
+      context.fillRect(cupX - layerWidthTop / 2, topY, layerWidthTop, layerHeight);
+      // console.log(index);
+    });
+    context.beginPath();
+    context.lineWidth = 10;
+    context.moveTo(cupX - cupWidthTop / 2, cupY);
+    context.lineTo(cupX + cupWidthTop / 2, cupY);
+    context.lineTo(cupX + cupWidthBottom / 2, cupY + cupHeight);
+    context.lineTo(cupX - cupWidthBottom / 2, cupY + cupHeight);
+    context.closePath();
+    context.stroke();
+
+  };
+
+  return (
+    <canvas ref={canvasRef}/>
+  );
+}
+
+
+function Documentation() {
+  return (
+    <section className='Documentation d-flex justify-content-center align-items-center vh-100'>
+      <div className='container-fluid'>
+        <div className='row justify-content-center'>
+          <div className='offset-md-1 col-md-8'>
+            <div className='card shadow'>
+              <div className='card-body'>
+                <h3 className='card-title'>Introduction</h3>
+                <h6>Jennie, a Starbucks enthusiast, is currently on a diet. She wishes to check the nutritional information prior to ordering her beverage.
+                  Given that she typically customizes her drink, relying solely on the app is insufficient for her needs.
+                  The current Starbucks menu only shows the total calorie per drink, helpful for controlling calorie intake but lacking depth in terms of comprehensive nutritional facts crucial for maintaining a healthy lifestyle.
+                  Moreover, the standard menu presentations fail to account for variations attributable to customizable options, such as differing milk choices, presenting a significant information gap for people seeking to make informed dietary choices.
+                  In response to this gap, we aim to build a tool for visualizing the nutritional facts of Starbucks drinks to enhance consumer awareness and empower people with the knowledge to make healthier choices.
+                </h6>
+              </div>
+            </div>
+          </div>
+          <div className='offset-md-2 col-md-8'>
+            <div className='card shadow'>
+              <div className='card-body'>
+                <h3 className='card-title'>Related Work</h3>
+                <h6>< a href="https://rpubs.com/saravargha/starbucks">rpubs.com</a>
+                  <div><a href="https://mavenanalytics.io/project/730">mavenalytics.io</a></div>
+                  <a href="https://medium.com/@olgakhvan/unleashing-starbucks-nutritional-contents-interactive-data-visualization-9b90f8145ab8">starbucks-interactive-data</a>
+                </h6>
+              </div>
+            </div>
+          </div>
+          <div className='offset-md-3 col-md-8'>
+            <div className='card shadow'>
+              <div className='card-body'>
+                <h3 className='card-title'>Methodology</h3>
+                <h6>
+                  I have made changes to my dataset to accomodate cup sizes.
+                  After exploratory analysis, I found that few beverages have incomplete nutritional profile and I filled those details using Google.
+                </h6>
+              </div>
+            </div>
+          </div>
+          < div className='offset-md-4 col-md-8'>
+            < div className='card shadow'>
+              <div className='card-body'>
+                <h3 className='card-title'>Design</h3>
+                <h6>
+                  We wanted to let the users know about the nutritional profile of the existing beverages. So we opted for Sankey diagrams to display the calories in each layer of every beverage
+                  Additionally, we also wanted to give the user his/her own choice of customizing their drink, so we opted for the cup design where dropdown values allow users to choose ingredients. To make sure the customer makes an informed decision, we display the equivalent healthy options.
+
+                </h6>
+              </div >
+            </div >
+          </div >
+          <div className='offset-md-3 col-md-8'>
+            <div className='card shadow'>
+              <div className='card-body'>
+                <h3 className='card-title'>Implementation</h3>
+                <h6>
+                  I have used ReactJs combined with D3.js for visualization
+                </h6>
+              </div>
+            </div>
+          </div>
+          <div className='offset-md-2 col-md-8'>
+            <div className='card shadow'>
+              <div className='card-body'>
+                <h3 className='card-title'>Discussion</h3>
+                <h6>The visualization allows users to understand the calories and contents of beverages. It is surprising to see how many calories are present in a small layer of cream as opposed to a big layer of coffee. I believe this helps the users make an educated decision about their consumption.
+
+                </h6>
+              </div>
+            </div>
+          </div>
+          <div className='offset-md-1 col-md-8'>
+            <div className='card shadow'>
+              <div className='card-body'>
+                <h3 className='card-title'>Future Work</h3>
+                <h6>I hope to expand the visualization showing the user about healthy equivalent values. I hope to refine this visualization a lot more.</h6>
+                <h4></h4>
+              </div>
+            </div>
+          </div>
+        </div >
+      </div >
+    </section >
+  )
 }

@@ -1,4 +1,13 @@
 Beverage_category,Beverage,Beverage_size,Milk_type,Calories,Total Fat (g),Trans Fat (g),Saturated Fat (g),Sodium (mg),Total Carbohydrates (g),Cholesterol (mg),Dietary Fibre (g),Sugars (g),Protein (g),Vitamin A (% DV),Vitamin C (% DV),Calcium (% DV),Iron (% DV),Caffeine (mg)
+Smoothies,Banana Chocolate Smoothie,Grande,Nonfat Milk,280,2.5,1.5,0,5,150,53,7,34,20,10%,15%,20%,0%,Varies
+Smoothies,Banana Chocolate Smoothie,Grande,2% Milk,300,5,2.5,0.1,15,160,53,7,34,20,8%,15%,20%,20%,15
+Smoothies,Banana Chocolate Smoothie,Grande,Soymilk,290,4.5,1.5,0,5,150,51,7,31,19,6%,15%,20%,20%,15
+Smoothies,Orange Mango Banana Smoothie,Grande,Nonfat Milk,260,1,0.3,0,5,120,54,6,37,16,50%,80%,10%,30%,15
+Smoothies,Orange Mango Banana Smoothie,Grande,2% Milk,270,1.5,0.5,0,5,125,53,6,37,16,50%,80%,10%,6%,0
+Smoothies,Orange Mango Banana Smoothie,Grande,Soymilk,270,1.5,0.4,0,5,120,53,6,36,15,50%,80%,10%,6%,0
+Smoothies,Strawberry Banana Smoothie,Grande,Nonfat Milk,290,1,0.3,0,5,125,58,7,41,16,4%,100%,10%,8%,0
+Smoothies,Strawberry Banana Smoothie,Grande,2% Milk,290,2,1,0,5,125,58,7,41,16,4%,100%,10%,8%,0
+Smoothies,Strawberry Banana Smoothie,Grande,Soymilk,290,2,0.4,0,5,120,58,8,40,16,2%,100%,10%,8%,0
 Coffee,Brewed Coffee,Short,none,3,0.1,0,0,0,5,0,0,0,0.3,0%,0%,0%,0%,175
 Coffee,Brewed Coffee,Tall,none,4,0.1,0,0,0,10,0,0,0,0.5,0%,0%,0%,0%,260
 Coffee,Brewed Coffee,Grande,none,5,0.1,0,0,0,10,0,0,0,1,0%,0%,0%,0%,330
@@ -171,15 +180,6 @@ Shaken Iced Beverages,Shaken Iced Tazo® Tea (With Classic Syrup),Venti,none,120
 Shaken Iced Beverages,Shaken Iced Tazo® Tea Lemonade (With Classic Syrup),Tall,none,100,0,0,0,0,0,25,0,24,0.1,0%,10%,0%,0%,Varies
 Shaken Iced Beverages,Shaken Iced Tazo® Tea Lemonade (With Classic Syrup),Grande,none,130,0,0,0,0,0,33,0,33,0.1,0%,15%,0%,0%,Varies
 Shaken Iced Beverages,Shaken Iced Tazo® Tea Lemonade (With Classic Syrup),Venti,none,190,0,0,0,0,0,49,0,49,0.1,0%,20%,0%,0%,Varies
-Smoothies,Banana Chocolate Smoothie,Grande,Nonfat Milk,280,2.5,1.5,0,5,150,53,7,34,20,10%,15%,20%,0%,Varies
-Smoothies,Banana Chocolate Smoothie,Grande,2% Milk,300,5,2.5,0.1,15,160,53,7,34,20,8%,15%,20%,20%,15
-Smoothies,Banana Chocolate Smoothie,Grande,Soymilk,290,4.5,1.5,0,5,150,51,7,31,19,6%,15%,20%,20%,15
-Smoothies,Orange Mango Banana Smoothie,Grande,Nonfat Milk,260,1,0.3,0,5,120,54,6,37,16,50%,80%,10%,30%,15
-Smoothies,Orange Mango Banana Smoothie,Grande,2% Milk,270,1.5,0.5,0,5,125,53,6,37,16,50%,80%,10%,6%,0
-Smoothies,Orange Mango Banana Smoothie,Grande,Soymilk,270,1.5,0.4,0,5,120,53,6,36,15,50%,80%,10%,6%,0
-Smoothies,Strawberry Banana Smoothie,Grande,Nonfat Milk,290,1,0.3,0,5,125,58,7,41,16,4%,100%,10%,8%,0
-Smoothies,Strawberry Banana Smoothie,Grande,2% Milk,290,2,1,0,5,125,58,7,41,16,4%,100%,10%,8%,0
-Smoothies,Strawberry Banana Smoothie,Grande,Soymilk,290,2,0.4,0,5,120,58,8,40,16,2%,100%,10%,8%,0
 Frappuccino® Blended Coffee,Coffee,Tall,Nonfat Milk,160,0.1,0,0,0,160,36,0,36,3,4%,0%,10%,10%,0
 Frappuccino® Blended Coffee,Coffee,Tall,Whole Milk,180,2.5,1.5,0.1,10,160,36,0,36,3,4%,0%,8%,0%,70
 Frappuccino® Blended Coffee,Coffee,Tall,Soymilk,160,1.5,0.2,0,0,150,35,0,34,2,4%,0%,10%,0%,70

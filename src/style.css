@@ -130,3 +130,86 @@ margin-left: 40px;
 .dropdown-container {
   margin: 20px 0;
 }
+
+.beverage-graph {
+  padding: 30px;
+}
+
+.beverage-graph h1 {
+  color: var(--accent-color);
+}
+
+.beverage-graph select {
+  color: var(--accent-color);
+  padding: 2px;
+  width: 37%;
+}
+
+.comparison .content-img {
+  width: 100%;
+}
+
+.comparison .drink {
+  margin-top: 120px;
+}
+
+.meldoy-img {
+  width: 50px;
+  height: 70px;
+  margin-top: -40px;
+}
+
+.spoon-img {
+  width: 50px;
+  height: 30px;
+}
+
+.oil-img {
+  width: 50px;
+  height: 50px;
+}
+
+.tofu-img {
+  width: 50px;
+  height: 50px;
+}
+
+.wheat-img {
+  width: 50px;
+  height: 50px;
+}
+
+.tofusss {
+  padding-top: 80px;
+}
+
+.tofusss1 {
+  padding-top: 60px;
+}
+
+.staw-img {
+  width: 50px;
+  height: 40px;
+  padding-right: 10px;
+}
+
+.keep-text {
+  align-self: center;
+  color: var(--accent-color);
+}
+
+.comparision {
+  margin-left: 20px;
+  margin-top: 20px;
+  color: var(--accent-color);
+}
+
+.Documentation{
+ padding-top: 600px;
+  background-image: url('../logo1.jpg');
+  background-size: cover;
+  background-position: center;
+  height: 100vh;
+  width: auto;
+  padding-bottom: 600px;
+}
