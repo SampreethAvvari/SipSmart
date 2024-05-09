@@ -36,7 +36,7 @@ function Navbar() {
         </button>
         <div className='collapse navbar-collapse' id='navbarNav'>
           <ul className='navbar-nav ml-auto'>
-            <li className='nav-item'>
+            {/* <li className='nav-item'>
               <a className='nav-link' href='#'>
                 Ha Yeon
               </a>
@@ -45,7 +45,7 @@ function Navbar() {
               <a className='nav-link' href='#'>
                 Claire
               </a>
-            </li>
+            </li> */}
             <li className='nav-item'>
               <a className='nav-link' href='#'>
                 Anusha
@@ -319,7 +319,7 @@ function StarbucksChart() {
   const [data, setData] = useState([]);
   const [groupedData, setGroupedData] = useState(new Map());
   const [uniqueCategories, setUniqueCategories] = useState([]);
-  const [selectedCategory, setSelectedCategory] = useState('');
+  const [selectedCategory, setSelectedCategory] = useState(() => localStorage.getItem('selectedCategory') || '');
   const svgRef = useRef(null);
 
   // Load data and setup
@@ -334,11 +334,18 @@ function StarbucksChart() {
           setGroupedData(grouped);
           const categories = Array.from(new Set(parsedData.map(d => d.Beverage_category)));
           setUniqueCategories(categories);
+          if(!localStorage.getItem('selectedCategory')){
           setSelectedCategory(categories[0]); // Default to first category
+          localStorage.setItem('selectedCategory', categories[0]);
+      }
       };
 
       fetchData();
   }, []);
+
+  useEffect(() => {
+    localStorage.setItem('selectedCategory', selectedCategory);
+  }, [selectedCategory]);
 
   // Update visualization when category changes
   useEffect(() => {
@@ -408,134 +415,263 @@ function StarbucksChart() {
     );
 }
 
-function CustomizeDrink() {
-  const [size, setSize] = useState(1);
-  const [activeLayer, setActiveLayer] = useState(null);
+// function CustomizeDrink() {
+//   const [size, setSize] = useState(() => parseFloat(localStorage.getItem('drinkSize')) || 1);
+//   const [activeLayer, setActiveLayer] = useState(() => {
+//     const layer = localStorage.getItem('activeLayer');
+//     return layer !== null ? parseInt(layer, 10) : null;
+//   });
+//   const [layerOptions, setLayerOptions] = useState(() => {
+//     const savedOptions = localStorage.getItem('layerOptions');
+//     return savedOptions ? JSON. parse(savedOptions) : [
+//       ["Milk options", "2% reduced fat", "1% reduced fat", "Soy milk", "Almond milk", "Oat milk"],
+//       ["Sugar options", "Zero Calorie sugar", "Sugar(Normal)", "Honey", "Maple Syrup"],
+//       ["Coffee Options", "Coffee Type 1", "Coffee Type 2", "Coffee Type 3"],
+//       ["Cream options", "Cream", "No Cream"]
+//   ];
+// });
+//   const [layerSizeMultipliers, setLayerSizeMultipliers] = useState(() => {
+//     const savedMultipliers = localStorage.getItem('layersizeMultipliers');
+//     return savedMultipliers ? JSON.parse(savedMultipliers) : [1, 1, 1, 1];
+// });
+//   const canvasRef = useRef(null);
+
+//   useEffect(() => {
+//     localStorage.setItem('drinkSize', size.toString());
+//     localStorage.setItem('activeLayer', activeLayer !== null ? activeLayer.toString() : '');
+//     localStorage.setItem('layerSizeMultipliers', JSON.stringify(layerSizeMultipliers));
+//     localStorage.setItem('layerOptions', JSON.stringify(layerOptions)); 
+//     drawCanvas();
+//   }, [size, activeLayer, layerSizeMultipliers, layerOptions]);
+
+//   const handleCanvasClick = (event) => {
+//     const rect = canvasRef.current.getBoundingClientRect();
+//     const x = event.clientX - rect.left;
+//     const y = event.clientY - rect.top;
+//     const layers = calculateLayers();
+//     const clickedLayer = layers.find(layer =>
+//       x >= layer.left && x <= layer.right && y >= layer.top && y <= layer.bottom
+//     );
+
+//     if (clickedLayer) {
+//       setActiveLayer(clickedLayer.index);
+//     } else {
+//       setActiveLayer(null);
+//     }
+//   };
+
+//   const handleOptionChange = (event) => {
+//     if (activeLayer !== null) {
+//       const newMultipliers = [...layerSizeMultipliers];
+//       newMultipliers[activeLayer] = parseFloat(event.target.value);
+//       setLayerSizeMultipliers(newMultipliers);
+//     }
+//   };
+
+
+//   const drawCanvas = () => {
+//       const canvas = canvasRef.current;
+//       const context = canvas.getContext('2d');
+//       const width = 400;
+//       const height = size * 200;
+//       canvas.width = width;
+//       canvas.height = height;
+
+//       context.clearRect(0, 0, width, height);
+//       const layers = calculateLayers();
+//       layers.forEach(layer => {
+//         context.fillStyle = layer.color;
+//         context.beginPath();
+//         context.moveTo(layer.left, layer.top);
+//         context.lineTo(layer.right, layer.top);
+//         context.lineTo(layer.right, layer.bottom);
+//         context.lineTo(layer.left, layer.bottom);
+//         context.closePath();
+//         context.fill();
+//       });
+
+//     const topMostLayer = layers[0];
+//     const bottomMostLayer = layers[layers.length - 1];
+
+//     context.strokeStyle = "rgb(0, 128, 0)";
+//     context.lineWidth = 5;
+//     context.beginPath();
+//     context.moveTo(topMostLayer.left, topMostLayer.top);
+//     context.lineTo(topMostLayer.right, topMostLayer.top);
+//     context.lineTo(bottomMostLayer.right, bottomMostLayer.bottom);
+//     context.lineTo(bottomMostLayer.left, bottomMostLayer.bottom);
+//     context.closePath();
+//     context.stroke();
+//   };
+
+// const calculateLayers = () => {
+//     const width = 400;
+//     const height = size * 200;
+//       const cupWidthTop = 60 * size;
+//       const cupWidthBottom = 40 * size;
+//       const cupHeight = 120 * size;
+//       const cupX = width / 2;
+//       const cupY = 60;
+
+//       const colors = ["grey", "#f5f5dc", "brown", "#fffdd0"];
+//       const layerHeight = cupHeight / 4;
+//       const layers = [];
+
+//       for (let i = 0; i < 4; i++) {
+//         const topY = cupY + i * layerHeight;
+//         const bottomY = topY + layerHeight;
+//         const topWidth = cupWidthTop - (i * (cupWidthTop - cupWidthBottom) / 4);
+//         const bottomWidth = topWidth - ((cupWidthTop - cupWidthBottom) / 4);
+//         layers.push({
+//           index: i,
+//           top: topY,
+//           bottom: bottomY,
+//           left: cupX - bottomWidth / 2,
+//           right: cupX + bottomWidth / 2,
+//           color: colors[i]
+//         });
+//       }
+//       return layers;
+//     };
+  
+
+//     return (
+//       <div>
+//         <label>Size:</label>
+//         <select onChange={e => setSize(parseFloat(e.target.value))} value={size}>
+//           <option value="1">Short</option>
+//           <option value="1.5">Tall</option>
+//           <option value="2">Grande</option>
+//           <option value="2.5">Venti</option>
+//         </select>
+//         {activeLayer !== null && (
+//           <select onChange={handleOptionChange} value={layerSizeMultipliers[activeLayer]}>
+//             {layerOptions[activeLayer].map((option, index) => (
+//               <option key={index} value={index + 1}>{option}</option>
+//             ))}
+//           </select>
+//         )}
+//         <canvas ref={canvasRef} onClick={handleCanvasClick} style={{ border: '1px solid black' }} />
+//       </div>
+//     );
+//   }
+  
+
+
+function CustomizeDrink2() {
+  const [size, setSize] = useState(() => parseFloat(localStorage.getItem('drinkSize')) || 1);
+  const [selectedOptions, setSelectedOptions] = useState(() => {
+    const savedOptions = localStorage.getItem('selectedOptions');
+    return savedOptions ? JSON.parse(savedOptions) : Array(4).fill(0);
+  });
   const [layerOptions] = useState([
-      ["2% reduced fat", "1% reduced fat", "Soy milk", "Almond milk", "Oat milk"],
-      ["Zero Calorie sugar", "Sugar(Normal)", "Honey", "Maple Syrup"],
-      ["Coffee Type 1", "Coffee Type 2", "Coffee Type 3"],
-      ["Cream", "No Cream"]
+      ["None", "2% reduced fat", "1% reduced fat", "Soy milk", "Almond milk", "Oat milk"],
+      ["None", "Zero Calorie sugar", "Sugar(Normal)", "Honey", "Maple Syrup"],
+      ["None", "Coffee Type 1", "Coffee Type 2", "Coffee Type 3"],
+      ["None", "Cream", "No Cream"]
   ]);
-  const [layerSizeMultipliers, setLayerSizeMultipliers] = useState([1, 1, 1, 1]);
+  const colors = [
+    ["#f0f0f0", "#f8d7da", "#f4c2c2", "#ff6961", "#cb99c9", "#77dd77"],
+    ["#f0f0f0", "#fdfd96", "#f49ac2", "#836953", "#779ecb"],
+    ["#f0f0f0", "#966fd6", "#ffad60", "#c23b22"],
+    ["#f0f0f0", "#d3d3d3", "#fff44f"]
+  ];
   const canvasRef = useRef(null);
 
   useEffect(() => {
-      drawCanvas();
-  }, [size, layerSizeMultipliers]);
+    localStorage.setItem('drinkSize', size.toString());
+    localStorage.setItem('selectedOptions', JSON.stringify(selectedOptions));
+    drawCanvas();
+  }, [size, selectedOptions]);
 
-  const handleCanvasClick = (event) => {
-    const rect = canvasRef.current.getBoundingClientRect();
-    const x = event.clientX - rect.left;
-    const y = event.clientY - rect.top;
-    const layers = calculateLayers();
-    const clickedLayer = layers.find(layer =>
-      x >= layer.left && x <= layer.right && y >= layer.top && y <= layer.bottom
-    );
-
-    if (clickedLayer) {
-      setActiveLayer(clickedLayer.index);
-    } else {
-      setActiveLayer(null);
-    }
+  const handleSelectionChange = (layerIndex, event) => {
+    const newOptions = [...selectedOptions];
+    newOptions[layerIndex] = parseInt(event.target.value, 10);
+    setSelectedOptions(newOptions);
   };
-
-  const handleOptionChange = (event) => {
-    if (activeLayer !== null) {
-      const newMultipliers = [...layerSizeMultipliers];
-      newMultipliers[activeLayer] = parseFloat(event.target.value);
-      setLayerSizeMultipliers(newMultipliers);
-    }
-  };
-
 
   const drawCanvas = () => {
-      const canvas = canvasRef.current;
-      const context = canvas.getContext('2d');
-      const width = 400;
-      const height = size * 200;
-      canvas.width = width;
-      canvas.height = height;
+    const canvas = canvasRef.current;
+    const context = canvas.getContext('2d');
+    const width = 400;
+    const height = 500;  // Set a fixed canvas height
+    canvas.width = width;
+    canvas.height = height;
 
-      context.clearRect(0, 0, width, height);
-      const layers = calculateLayers();
-      layers.forEach(layer => {
-        context.fillStyle = layer.color;
-        context.beginPath();
-        context.moveTo(layer.left, layer.top);
-        context.lineTo(layer.right, layer.top);
-        context.lineTo(layer.right, layer.bottom);
-        context.lineTo(layer.left, layer.bottom);
-        context.closePath();
-        context.fill();
-      });
+    context.clearRect(0, 0, width, height);
 
-      const topMostLayer = layers[0];
-    const bottomMostLayer = layers[layers.length - 1];
+    // Adjust the cup dimensions based on size
+    const scale = 0.75 + 0.25 * size; // Scale ranges from 1.0 to 1.5
+    const cupWidthTop = 180 * scale; // Base width at the top of the cup
+    const cupWidthBottom = 120 * scale; // Base width at the bottom of the cup
+    const cupHeight = 280 * scale; // Height of the cup
+    const cupX = width / 2;
+    const cupY = height - cupHeight - 50; // Ensure there's space at the bottom
 
-    context.strokeStyle = "rgb(0, 128, 0)";
-    context.lineWidth = 5;
+    // Draw the cup outline
+    
+    const taperFactor = 2;
+
+    // Filling the layers inside the cup
+    // const layerHeight = cupHeight / layerOptions.length;
+    // for (let i = 0; i < selectedOptions.length; i++) {
+    //   if (selectedOptions[i] > 0) {
+    //     const topY = cupY + i * layerHeight;
+    //     const layerWidthTop = cupWidthTop - (cupWidthTop - cupWidthBottom) * (i / layerOptions.length)- taperFactor * i * scale;
+    //     context.fillStyle = ["#a6cee3", "#1f78b4", "#b2df8a", "#33a02c"][i];
+    //     context.fillRect(cupX - layerWidthTop / 2, topY, layerWidthTop, layerHeight);
+    //   }
+    // }
+
+    const layerHeight = cupHeight / layerOptions.length;
+    selectedOptions.forEach((option, index) => {
+      const topY = cupY + index * layerHeight;
+      context.fillStyle = colors[index][option]; // Assign color per layer
+      context.fillRect(cupX - cupWidthTop / 2, topY, cupWidthTop, layerHeight);
+    });
     context.beginPath();
-    context.moveTo(topMostLayer.left, topMostLayer.top);
-    context.lineTo(topMostLayer.right, topMostLayer.top);
-    context.lineTo(bottomMostLayer.right, bottomMostLayer.bottom);
-    context.lineTo(bottomMostLayer.left, bottomMostLayer.bottom);
+    context.lineWidth = 10;
+    context.moveTo(cupX - cupWidthTop / 2, cupY);
+    context.lineTo(cupX + cupWidthTop / 2, cupY);
+    context.lineTo(cupX + cupWidthBottom / 2, cupY + cupHeight);
+    context.lineTo(cupX - cupWidthBottom / 2, cupY + cupHeight);
     context.closePath();
     context.stroke();
+
   };
 
-const calculateLayers = () => {
-    const width = 400;
-    const height = size * 200;
-      const cupWidthTop = 60 * size;
-      const cupWidthBottom = 40 * size;
-      const cupHeight = 120 * size;
-      const cupX = width / 2;
-      const cupY = 60;
-
-      const colors = ["grey", "#f5f5dc", "brown", "#fffdd0"];
-      const layerHeight = cupHeight / 4;
-      const layers = [];
-
-      for (let i = 0; i < 4; i++) {
-        const topY = cupY + i * layerHeight;
-        const bottomY = topY + layerHeight;
-        const topWidth = cupWidthTop - (i * (cupWidthTop - cupWidthBottom) / 4);
-        const bottomWidth = topWidth - ((cupWidthTop - cupWidthBottom) / 4);
-        layers.push({
-          index: i,
-          top: topY,
-          bottom: bottomY,
-          left: cupX - bottomWidth / 2,
-          right: cupX + bottomWidth / 2,
-          color: colors[i]
-        });
-      }
-      return layers;
-    };
-  
-
-    return (
-      <div>
-        <label>Size:</label>
-        <select onChange={e => setSize(parseFloat(e.target.value))} value={size}>
-          <option value="1">Short</option>
-          <option value="1.5">Tall</option>
-          <option value="2">Grande</option>
-          <option value="2.5">Venti</option>
-        </select>
-        {activeLayer !== null && (
-          <select onChange={handleOptionChange} value={layerSizeMultipliers[activeLayer]}>
-            {layerOptions[activeLayer].map((option, index) => (
-              <option key={index} value={index + 1}>{option}</option>
+  return (
+    <div>
+      <h1>Customize Your Drink</h1>
+      {layerOptions.map((options, index) => (
+        <div key={index}>
+          <h3>Layer {index + 1}</h3>
+          <select value={selectedOptions[index]} onChange={(e) => handleSelectionChange(index, e)}>
+            {options.map((option, optionIndex) => (
+              <option key={optionIndex} value={optionIndex}>{option}</option>
             ))}
           </select>
-        )}
-        <canvas ref={canvasRef} onClick={handleCanvasClick} style={{ border: '1px solid black' }} />
+        </div>
+      ))}
+      <div>
+        <label>Size:</label>
+        {["1", "1.5", "2", "2.5"].map((option, index) => (
+          <label key={index}>
+            <input
+              type="radio"
+              name="size"
+              value={option}
+              checked={parseFloat(size) === parseFloat(option)}
+              onChange={(e) => setSize(parseFloat(e.target.value))}
+            />
+            {option === "1" ? "Short" : option === "1.5" ? "Tall" : option === "2" ? "Grande" : "Venti"}
+          </label>
+        ))}
       </div>
-    );
-  }
-  
+      <canvas ref={canvasRef} style={{ border: '1px solid black', marginTop: '20px' }} />
+    </div>
+  );
+}
 function LayoutComponent() {
   return (
       <section className='introduction1 d-flex align-items-center '>
@@ -544,7 +680,9 @@ function LayoutComponent() {
                   <div className='offset-md-1 col-md-5'>
                       <div className='card shadow'>
                           <div className='card-body'>
-                              <CustomizeDrink />
+                              {/* <CustomizeDrink /> */}
+                              {/* <CustomizeDrink1/> */}
+                              <CustomizeDrink2/>
                           </div>
                       </div>
                   </div>
